@@ -1,0 +1,6 @@
+{
+  "apps": [
+    { "profile": "default", "name": "Claude - Personal", "color": "#247DE8" },
+    { "profile": "work", "name": "Claude - Work", "color": "#9346CF" }
+  ]
+}
