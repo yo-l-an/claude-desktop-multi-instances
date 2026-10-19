@@ -1,7 +1,7 @@
 import Foundation
 
 let fm = FileManager.default
-let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
+let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
 let home = fm.homeDirectoryForCurrentUser
 struct Failure: LocalizedError {
     let message: String
@@ -77,7 +77,7 @@ func configData(_ config: [String: Any], entries: [[String: Any]]) throws -> Dat
 func main() throws {
     let args = Array(CommandLine.arguments.dropFirst())
     if args.contains("--help") || args.contains("-h") {
-        print("Usage: \"./Delete a Profile.command\" [PROFILE] [--dry-run]\nWithout PROFILE, choose interactively. Deletion always requires typed confirmation.")
+        print("Usage: \"./Claude Profiles - macOS.command\" delete [PROFILE] [--dry-run]\nWithout PROFILE, choose interactively. Deletion always requires typed confirmation.")
         return
     }
     let dryRun = args.contains("--dry-run")

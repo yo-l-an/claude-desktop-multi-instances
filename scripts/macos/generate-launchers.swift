@@ -3,7 +3,7 @@ import CryptoKit
 import Foundation
 
 let fm = FileManager.default
-let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
+let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
 let prefix = "local.claudeprofiles."
 struct Failure: LocalizedError {
     let message: String
@@ -138,7 +138,7 @@ func buildApp(_ app: App, base: NSImage, staging: URL, work: URL) throws {
     let executable = contents.appendingPathComponent("MacOS/claude-launcher")
     try fm.createDirectory(at: resources, withIntermediateDirectories: true)
     try fm.createDirectory(at: executable.deletingLastPathComponent(), withIntermediateDirectories: true)
-    try fm.copyItem(at: root.appendingPathComponent("scripts/launch-claude.sh"), to: executable)
+    try fm.copyItem(at: root.appendingPathComponent("scripts/macos/launch-claude.sh"), to: executable)
     try fm.setAttributes([.posixPermissions: 0o755], ofItemAtPath: executable.path)
     let iconFile = try icon(base, tint: color(app.color), directory: work.appendingPathComponent(app.profile))
     let digest = SHA256.hash(data: try Data(contentsOf: iconFile)).prefix(8).map { String(format: "%02x", $0) }.joined()
@@ -236,13 +236,13 @@ func main() throws {
             if option == "--output" { output = url }
             if option == "--install-dir" { destination = url; install = true }
         case "--help", "-h":
-            print("Usage: ./scripts/generate-launchers.sh [--install] [--validate] [--config FILE] [--output DIR] [--install-dir DIR]")
+            print("Usage: ./scripts/macos/generate-launchers.sh [--install] [--validate] [--config FILE] [--output DIR] [--install-dir DIR]")
             return
         default: throw Failure("Unknown argument: \(option)")
         }
     }
     guard exists(configURL) else {
-        guard install && !validateOnly else { throw Failure("Missing config. Run Create Launchers.command or copy config.example.json to config.json.") }
+        guard install && !validateOnly else { throw Failure("Missing config. Run Claude Profiles - macOS.command (Create launchers) or copy config.example.json to config.json.") }
         try Data("{\n  \"apps\": {}\n}\n".utf8).write(to: configURL, options: .withoutOverwriting)
         warn("Config was missing. Created \(configURL.path) with an empty apps object. Add your apps using config.example.json, then run the installer again.")
         return
